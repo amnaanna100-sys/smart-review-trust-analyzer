@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Product Review Trust Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand">
+                <i class="fas fa-magnifying-glass-chart"></i>
+                Smart Review Analyzer
+            </span>
+            <span class="navbar-text text-light">
+                Detect Fake Reviews | Analyze Sentiment | Calculate Trust
+            </span>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Input Section -->
+            <div class="col-lg-6">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white">
+                        <h5><i class="fas fa-edit"></i> Review Input</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Tab Navigation -->
+                        <ul class="nav nav-tabs" id="inputTabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#textInput" data-bs-toggle="tab">
+                                    <i class="fas fa-keyboard"></i> Single Review
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#bulkInput" data-bs-toggle="tab">
+                                    <i class="fas fa-file-csv"></i> Bulk Upload
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab Content -->
+                        <div class="tab-content mt-3">
+                            <!-- Single Review Tab -->
+                            <div class="tab-pane fade show active" id="textInput">
+                                <form id="singleReviewForm">
+                                    <div class="mb-3">
+                                        <label for="reviewText" class="form-label">Enter Review Text</label>
+                                        <textarea 
+                                            class="form-control" 
+                                            id="reviewText" 
+                                            rows="6" 
+                                            placeholder="Paste the product review here..."
+                                            maxlength="512"
+                                        ></textarea>
+                                        <small class="text-muted">Max 512 characters</small>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-check-circle"></i> Analyze Review
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Bulk Upload Tab -->
+                            <div class="tab-pane fade" id="bulkInput">
+                                <form id="bulkUploadForm">
+                                    <div class="mb-3">
+                                        <label for="csvFile" class="form-label">Upload CSV File</label>
+                                        <input 
+                                            type="file" 
+                                            class="form-control" 
+                                            id="csvFile" 
+                                            accept=".csv"
+                                        >
+                                        <small class="text-muted">CSV file with 'review' column</small>
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100">
+                                        <i class="fas fa-upload"></i> Upload & Analyze
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="col-lg-6">
+                <div id="resultsContainer" style="display: none;">
+                    <!-- Fake/Genuine Result -->
+                    <div class="card shadow-lg mb-3">
+                        <div class="card-header bg-danger text-white">
+                            <h6><i class="fas fa-ban"></i> Fake Detection</h6>
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="fakeResult">-</h3>
+                            <div class="progress mt-2">
+                                <div id="fakeConfidence" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <small id="fakeConfidenceText" class="text-muted">Confidence: 0%</small>
+                        </div>
+                    </div>
+
+                    <!-- Sentiment Result -->
+                    <div class="card shadow-lg mb-3">
+                        <div class="card-header bg-info text-white">
+                            <h6><i class="fas fa-face-smile"></i> Sentiment Analysis</h6>
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="sentimentResult">-</h3>
+                            <div class="progress mt-2">
+                                <div id="sentimentConfidence" class="progress-bar bg-info" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <small id="sentimentConfidenceText" class="text-muted">Confidence: 0%</small>
+                        </div>
+                    </div>
+
+                    <!-- Spam Detection Result -->
+                    <div class="card shadow-lg mb-3">
+                        <div class="card-header bg-warning text-dark">
+                            <h6><i class="fas fa-exclamation-triangle"></i> Spam Detection</h6>
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="spamResult">-</h3>
+                            <div class="progress mt-2">
+                                <div id="spamConfidence" class="progress-bar bg-warning" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <small id="spamConfidenceText" class="text-muted">Confidence: 0%</small>
+                        </div>
+                    </div>
+
+                    <!-- Rating Prediction Result -->
+                    <div class="card shadow-lg mb-3">
+                        <div class="card-header bg-success text-white">
+                            <h6><i class="fas fa-star"></i> Rating Prediction</h6>
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="ratingResult">-</h3>
+                            <div id="starRating" class="mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Results Message -->
+                <div id="noResultsMessage" class="alert alert-info text-center">
+                    <i class="fas fa-arrow-left"></i> Enter a review on the left to see analysis results
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust Score Dashboard -->
+        <div id="trustScoreDashboard" style="display: none;" class="row mt-4">
+            <div class="col-12">
+                <div class="card shadow-lg border-success">
+                    <div class="card-header bg-success text-white">
+                        <h5><i class="fas fa-shield-alt"></i> Product Trust Score</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <h2 id="trustScore" class="text-success">0</h2>
+                                <p class="text-muted">Overall Trust Score (0-100)</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h4 id="genuinePercentage" class="text-success">0%</h4>
+                                <p class="text-muted">Genuine Reviews</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h4 id="spamPercentage" class="text-warning">0%</h4>
+                                <p class="text-muted">Spam Reviews</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h4 id="avgRating" class="text-info">0</h4>
+                                <p class="text-muted">Average Rating</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="spinner-overlay" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

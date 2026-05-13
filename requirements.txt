@@ -1,0 +1,32 @@
+# Web Framework
+Flask==3.0.0
+Flask-CORS==4.0.0
+
+# Machine Learning & Data Processing
+scikit-learn==1.3.2
+pandas==2.0.3
+numpy==1.24.3
+
+# Natural Language Processing
+nltk==3.8.1
+spacy==3.7.2
+
+# Data Serialization
+joblib==1.3.2
+pickle5==0.0.12
+
+# Visualization (Optional)
+matplotlib==3.8.0
+seaborn==0.13.0
+
+# Utilities
+python-dotenv==1.0.0
+requests==2.31.0
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+
+# Code Quality
+black==23.10.0
+flake8==6.1.0
