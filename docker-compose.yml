@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  smart-review-analyzer:
+    build: .
+    container_name: smart-review-analyzer
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DEBUG=False
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./ml_models/trained_models:/app/models/trained_models:ro
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - smart-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+networks:
+  smart-network:
+    driver: bridge

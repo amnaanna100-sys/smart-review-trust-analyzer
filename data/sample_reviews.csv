@@ -1,0 +1,19 @@
+review,rating,sentiment
+"This product exceeded my expectations! Excellent quality and fast shipping.",5,positive
+"Love it! Best purchase I've made this year.",5,positive
+"Great value for money. Highly recommend!",4,positive
+"Good quality, arrived quickly.",4,positive
+"It's okay, nothing special but does the job.",3,neutral
+"Average product, meets basic requirements.",3,neutral
+"Not happy with this purchase.",2,negative
+"Disappointed with quality, below expectations.",2,negative
+"Terrible experience, waste of money!",1,negative
+"Do not buy this product!",1,negative
+"Amazing item, works perfectly!",5,positive
+"Very satisfied with my purchase.",4,positive
+"Decent product for the price.",3,neutral
+"Not as described in listing.",2,negative
+"Click here for special offer!!!",1,spam
+"Limited time deal buy now!!!",1,spam
+"Best seller in our store!",1,spam
+"Free shipping promotion today!",1,spam
